@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee <form action=""></form></title>
+</head>
+<body>
+  <h1>Employee details</h1>
+  <form id="employeeForm">
+    <label for="name">Employee Name:</label>
+    <input type="text" id="name" required>
+    <br>
+    <label for="salary">Salary:</label>
+    <input type="number" id="salary">
+    <br>
+    <label for="joiningDate">Date of Joining:</label>
+    <input type="date" id="joiningDate" required>
+    <br>
+    <label for="department">Department:</label>
+    <input type="text" id="department" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <br>
+    <label for="gender">Gender:</label>
+    <select id="gender" required>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+    <br>
+    <button type="button" id="addButton">Add Employee</button>
+  </form>
+  
+  <button type="button" id="sortButton">Sort by Name</button>
+  
+  <table id="employeeTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Salary</th>
+        <th>Date of Joining</th>
+        <th>Department</th>
+        <th>Email</th>
+        <th>Gender</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const addButton = document.getElementById('addButton');
+    const sortButton = document.getElementById('sortButton');
+    const employeeTable = document.getElementById('employeeTable');
+    const employeeForm = document.getElementById('employeeForm');
+
+    addButton.addEventListener('click', () => {
+      if (employeeForm.checkValidity()) {
+        const name = document.getElementById('name').value;
+        const salary = document.getElementById('salary').value;
+        const joiningDate = document.getElementById('joiningDate').value;
+        const department = document.getElementById('department').value;
+        const email = document.getElementById('email').value;
+        const gender = document.getElementById('gender').value;
+
+        const newRow = employeeTable.insertRow();
+        newRow.innerHTML = `
+          <td>${name}</td>
+          <td>${salary}</td>
+          <td>${joiningDate}</td>
+          <td>${department}</td>
+          <td>${email}</td>
+          <td>${gender}</td>
+        `;
+
+        employeeForm.reset();
+      }
+    });
+
+    sortButton.addEventListener('click', () => {
+      const rows = Array.from(employeeTable.rows);
+      rows.shift(); // Remove the header row
+
+      rows.sort((a, b) => {
+        const nameA = a.cells[0].textContent.trim().toLowerCase();
+        const nameB = b.cells[0].textContent.trim().toLowerCase();
+        return nameA.localeCompare(nameB);
+      });
+
+      while (employeeTable.rows.length > 1) {
+        employeeTable.deleteRow(1);
+      }
+
+      rows.forEach(row => {
+        employeeTable.appendChild(row);
+      });
+    });
+  </script>
+</body>
+</html>
